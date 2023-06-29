@@ -2,9 +2,10 @@ import { useState } from 'react'
 import { Dialog } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import {Link} from "react-router-dom";
+import Account from "./Account"
 
 const navigation = [
-    { name: 'Product', href: '#' },
+    { name: 'Profile', to: '/profile' },
     { name: 'Features', href: '#' },
     { name: 'Marketplace', href: '#' },
     { name: 'Company', href: '#' },
@@ -39,9 +40,9 @@ function Hero() {
                     </div>
                     <div className="hidden lg:flex lg:gap-x-12">
                         {navigation.map((item) => (
-                            <a key={item.name} href={item.href} className="text-sm font-semibold leading-6 text-gray-900">
+                            <Link key={item.name} to={item.to} className="text-sm font-semibold leading-6 text-gray-900">
                                 {item.name}
-                            </a>
+                            </Link>
                         ))}
                     </div>
                     <div className="hidden lg:flex lg:flex-1 lg:justify-end">
@@ -155,6 +156,8 @@ function Hero() {
                     />
                 </div>
             </div>
+
+            <Account/>
         </div>
     )
 }

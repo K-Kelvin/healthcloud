@@ -4,10 +4,10 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import {Link} from "react-router-dom";
 
 const navigation = [
-    { name: 'Product', href: '#' },
-    { name: 'Features', href: '#' },
-    { name: 'Marketplace', href: '#' },
-    { name: 'Company', href: '#' },
+    { name: 'Profile', to: '/profile' },
+    { name: 'Features', to: '#' },
+    { name: 'Marketplace', to: '#' },
+    { name: 'Company', to: '#' },
 ]
 
 function SignIn() {
@@ -37,7 +37,7 @@ function SignIn() {
                 </div>
                 <div className="hidden lg:flex lg:gap-x-12">
                     {navigation.map((item) => (
-                        <a key={item.name} href={item.href} className="text-sm font-semibold leading-6 text-gray-900">
+                        <a key={item.name} href={item.to} className="text-sm font-semibold leading-6 text-gray-900">
                             {item.name}
                         </a>
                     ))}
