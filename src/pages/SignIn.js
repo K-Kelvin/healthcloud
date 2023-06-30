@@ -1,49 +1,7 @@
-import axios from "axios";
-import { useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom';
-
+import useLogin from "../hooks/useLogin";
 
 function SignIn() {
-    const [errorMessage, setErrorMessage] = useState('');
-    const navigate = useNavigate();
-    const location = useLocation();
-
-    // check to see if the user has been redirected to login from another route
-    // if not, set redirect after login to '/home' route
-    let from = location.state?.from?.pathname || "/home";
-
-
-    const handleLogin = (event) => {
-        event.preventDefault() // prevent the page from reloading on form submission (default behaviour)
-        setErrorMessage('') // clear the previous errors
-
-        const formData = new FormData(event.currentTarget);
-        const username = formData.get("username"); // get the username from the submitted form
-        const password = formData.get("password"); // get the password from the submitted form
-
-        const data = {
-            "grant_type": "password",
-            "client_id": "TTxh4hr0NeyBR7HAlZnLSlO9CWXfwoHnIUaqWQli", // get from dashboard
-            "client_secret": "77vejSg0ohd75U9TtAVcPrfg1WWfBNqrhIVzOYk7e...", // get from dashboard
-            username,
-            password
-        }
-
-        axios.post("https://accounts.multitenant.slade360.co.ke/oauth2/token/", data)
-            .then(({ data }) => {
-                // Upon successful login,
-                // save the token to localStorage for persistence
-                const Authorization = data.token_type + " " + data.access_token
-                localStorage.setItem("Authorization", Authorization)
-
-                // redirect to the page they came from or to home page
-                navigate(from, { replace: true });
-            }).catch(error => {
-                // handle the errors
-                console.log(error)
-                setErrorMessage('Invalid Credentials')
-            })
-    }
+    const { errorMessage, handleLogin } = useLogin();
 
     return (
         <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 lg:pt-32">
