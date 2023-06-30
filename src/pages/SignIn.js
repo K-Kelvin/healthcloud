@@ -1,17 +1,25 @@
-import { useState } from 'react'
 import axios from "axios";
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom';
 
 
 function SignIn() {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
+    const location = useLocation();
+
+    // check to see if the user has been redirected to login from another route
+    // if not, set redirect after login to '/home' route
+    let from = location.state?.from?.pathname || "/home";
+
 
     const handleLogin = (event) => {
         event.preventDefault() // prevent the page from reloading on form submission (default behaviour)
         setErrorMessage('') // clear the previous errors
+
+        const formData = new FormData(event.currentTarget);
+        const username = formData.get("username"); // get the username from the submitted form
+        const password = formData.get("password"); // get the password from the submitted form
 
         const data = {
             "grant_type": "password",
@@ -28,8 +36,8 @@ function SignIn() {
                 const Authorization = data.token_type + " " + data.access_token
                 localStorage.setItem("Authorization", Authorization)
 
-                // redirect to the home page
-                return navigate("/home");
+                // redirect to the page they came from or to home page
+                navigate(from, { replace: true });
             }).catch(error => {
                 // handle the errors
                 console.log(error)
@@ -67,8 +75,6 @@ function SignIn() {
                                 placeholder='Enter username...'
                                 required
                                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                value={username}
-                                onChange={e => setUsername(e.target.value)}
                             />
                         </div>
                     </div>
@@ -93,8 +99,6 @@ function SignIn() {
                                 placeholder='Enter password...'
                                 required
                                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                value={password}
-                                onChange={e => setPassword(e.target.value)}
                             />
                         </div>
                     </div>
