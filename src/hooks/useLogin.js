@@ -6,12 +6,13 @@ const LOGIN_URL = "https://accounts.multitenant.slade360.co.ke/oauth2/token/";
 
 const getLoginData = (username, password) => ({
     "grant_type": "password",
-    "client_id": process.env.CLIENT_ID, // environment variables in .env
-    "client_secret": process.env.CLIENT_SECRET,
+    "client_id": process.env.REACT_APP_CLIENT_ID, // environment variables in .env
+    "client_secret": process.env.REACT_APP_CLIENT_SECRET,
     username,
     password
 });
 
+// eslint-disable-next-line no-unused-vars
 const getRefreshData = () => ({
     "grant_type": "refresh_token",
     "client_id": process.env.CLIENT_ID,
@@ -42,8 +43,10 @@ export default function useLogin() {
         const formData = new FormData(event.currentTarget);
         const username = formData.get("username"); // get the username from the submitted form
         const password = formData.get("password"); // get the password from the submitted form
+        const data = getLoginData(username, password)
+        console.log(data)
 
-        axios.post(LOGIN_URL, getLoginData(username, password), axiosConfig)
+        axios.post(LOGIN_URL, data, axiosConfig)
             .then(({ data }) => {
                 // Upon successful login,
                 // save the token to localStorage for persistence
